@@ -1,0 +1,46 @@
+@startuml
+
+Abstract Class Message {
+  -header:Header
+  -body:Body
+  +getHeader()
+  +setHeader(header:Header)
+  +getBody()
+  +setBody(body:Body)
+}
+
+Class ContentMessage {
+
+}
+Class ControlMessage {
+
+}
+
+Class Header {
+  -messageId:Long
+  -originator:String
+  -receiver:String
+  -creationTime:LocalDateTime
+  -expirationTime:LocalDateTime
+  +getMessageId()
+  +setMessageId(messageId:Long)
+  +getOriginator()
+  +setOriginator(originator:String)
+  +getReceiver()
+  +setReceiver(receiver:String)
+  +getExpirationDate()
+  +setExpirationDate(expirationDate:DateTime)
+}
+
+Class Body {
+  -content:String
+  +getContent()
+  +setContent(content:String)
+}
+
+Message *- Header
+Message *- Body
+
+Message <|--ContentMessage
+Message <|--ControlMessage
+@enduml

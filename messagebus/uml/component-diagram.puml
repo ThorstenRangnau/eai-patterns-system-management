@@ -1,0 +1,21 @@
+@startuml
+skinparam componentStyle uml2
+
+interface RegistrationAPI <<provided>>
+interface MessageAPI <<provided>>
+interface MessageEndpoint <<required>>
+
+component MessageBus {
+  interface RegistrationService <<provided>>
+  component Registry
+  component MessageRouter
+
+  RegistrationService <-- Registry
+  MessageRouter ..> RegistrationService : requires
+}
+
+RegistrationAPI <-- MessageBus
+MessageAPI <-- MessageBus
+MessageBus --> MessageEndpoint
+
+@enduml

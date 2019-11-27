@@ -7,6 +7,22 @@ public abstract class Message {
     private Header header;
     private Body body;
 
+    public boolean isSend() {
+        return header.isSend();
+    }
+
+    public Long getMessageId() {
+        return header.getMessageId();
+    }
+
+    public String getReceiver() {
+        return header.getReceiver();
+    }
+
+    public String getMessageContent() {
+        return body.getContent();
+    }
+
     protected Header getHeader() {
         return header;
     }
@@ -24,4 +40,8 @@ public abstract class Message {
         Validate.notNull(body, "body is null");
         this.body = body;
     }
+
+    public abstract void setSendingStatus(Boolean isSend);
+
+    public abstract Long registerMessage();
 }

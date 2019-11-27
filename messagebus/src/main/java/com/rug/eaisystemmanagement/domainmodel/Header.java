@@ -6,19 +6,22 @@ import java.time.LocalDateTime;
 
 public class Header {
 
+    private static Long idCount = 0L;
+
     private Long messageId;
     private String originator;
     private String receiver;
     private LocalDateTime creationTime;
     private LocalDateTime expirationTime;
+    private Boolean isSend;
 
     public Long getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(Long messageId) {
-        Validate.notNull(messageId, "messageId is null");
-        this.messageId = messageId;
+    public Long initiateMessageId() {
+        this.messageId = idCount++;
+        return messageId;
     }
 
     public String getOriginator() {
@@ -55,5 +58,13 @@ public class Header {
     public void setExpirationTime(LocalDateTime expirationTime) {
         Validate.notNull(expirationTime, "expirationTime is null");
         this.expirationTime = expirationTime;
+    }
+
+    public void setIsSend(Boolean isSend) {
+        this.isSend = isSend;
+    }
+
+    public boolean isSend() {
+        return isSend;
     }
 }

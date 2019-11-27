@@ -7,15 +7,24 @@ interface MessageEndpoint <<required>>
 
 component MessageBus {
   interface RegistrationService <<provided>>
+  interface MessageProcessingService <<provided>>
+  interface MessageRoutingService <<provided>>
   component Registry
   component MessageRouter
+  component MessageProcessor
 
-  RegistrationService <-- Registry
+  RegistrationService <-- Registry : provides
   MessageRouter ..> RegistrationService : requires
+  MessageProcessor --> MessageProcessingService : provides
+  MessageRouter --> MessageRoutingService : provides
+  MessageProcessor ..> MessageRoutingService : requires
 }
 
 RegistrationAPI <-- MessageBus
 MessageAPI <-- MessageBus
 MessageBus --> MessageEndpoint
+MessageAPI ..> MessageProcessingService : maps to
+MessageRouter ..> MessageEndpoint : uses
+RegistrationAPI ..> RegistrationService : maps to
 
 @enduml

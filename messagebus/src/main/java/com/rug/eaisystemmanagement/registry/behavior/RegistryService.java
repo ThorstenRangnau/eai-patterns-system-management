@@ -12,4 +12,7 @@ public interface RegistryService {
 
     Map<Long, RegisteredApplication> getTargets();
 
+    Long resolveReceiver(String receiver);
+
+    String getUrlByApplcationId(Long receiverApplicationId);
 }

@@ -33,4 +33,21 @@ public class RegistryServiceImpl implements RegistryService {
     public Map<Long, RegisteredApplication> getTargets() {
         return registeredApplications;
     }
+
+    @Override
+    public Long resolveReceiver(String receiver) {
+        return registeredApplications
+            .entrySet()
+            .stream()
+            .filter(e -> e.getValue().getApplicationName().equals(receiver))
+            .findFirst()
+            .get()
+            .getValue()
+            .getId();
+    }
+
+    @Override
+    public String getUrlByApplcationId(Long receiverApplicationId) {
+        return registeredApplications.get(receiverApplicationId).getUrl();
+    }
 }

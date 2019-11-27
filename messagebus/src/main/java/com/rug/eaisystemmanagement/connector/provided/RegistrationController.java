@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestController("/registration")
+/**
+ * RegistrationController forges the RegistrationAPI
+ */
+
+@RestController
+@RequestMapping("/registration")
 public class RegistrationController {
 
     @Autowired
@@ -26,7 +31,7 @@ public class RegistrationController {
         return registryService.getTargets();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public void deregisterApplication(@PathVariable Long id) {
         Boolean success = registryService.deregister(id);
         //TODO: throw Exception if deregistration was unsuccessful

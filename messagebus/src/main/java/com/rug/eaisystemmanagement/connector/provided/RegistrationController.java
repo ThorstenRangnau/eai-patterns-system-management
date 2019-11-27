@@ -15,10 +15,10 @@ public class RegistrationController {
     private RegistryService registryService;
 
     @PostMapping
-    public RegisteredApplication createRegistration(@RequestBody RegisteredApplicationDTO dto) {
-        Validate.notBlank(dto.getApplicationName(), "applicationName is blank");
-        Validate.notBlank(dto.getUrl(), "url is blank");
-        return registryService.register(dto.getApplicationName(), dto.getUrl());
+    public RegisteredApplication createRegistration(@RequestBody RegisteredApplicationDTO registeredApplicationDTO) {
+        Validate.notBlank(registeredApplicationDTO.getApplicationName(), "applicationName is blank");
+        Validate.notBlank(registeredApplicationDTO.getUrl(), "url is blank");
+        return registryService.register(registeredApplicationDTO.getApplicationName(), registeredApplicationDTO.getUrl());
     }
 
     @GetMapping

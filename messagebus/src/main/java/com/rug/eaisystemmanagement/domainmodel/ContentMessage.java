@@ -1,5 +1,7 @@
 package com.rug.eaisystemmanagement.domainmodel;
 
+import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationTime;
+
 public class ContentMessage extends Message {
 
     @Override
@@ -8,7 +10,7 @@ public class ContentMessage extends Message {
     }
 
     @Override
-    public Long registerMessage() {
-        return getHeader().getMessageId() != null ? getHeader().getMessageId() : getHeader().initiateMessageId();
+    public Long registerMessage(MessageExpirationTime messageExpirationTime) {
+        return getHeader().getMessageId() != null ? getHeader().getMessageId() : getHeader().initiateMessageId(messageExpirationTime);
     }
 }

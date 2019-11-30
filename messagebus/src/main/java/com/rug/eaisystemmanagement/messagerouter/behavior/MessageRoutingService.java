@@ -1,4 +1,4 @@
-package com.rug.eaisystemmanagement.messagerouter;
+package com.rug.eaisystemmanagement.messagerouter.behavior;
 
 import com.rug.eaisystemmanagement.domainmodel.ContentMessage;
 

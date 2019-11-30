@@ -1,5 +1,6 @@
 package com.rug.eaisystemmanagement.domainmodel;
 
+import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationTime;
 import org.apache.commons.lang3.Validate;
 
 public abstract class Message {
@@ -43,5 +44,5 @@ public abstract class Message {
 
     public abstract void setSendingStatus(Boolean isSend);
 
-    public abstract Long registerMessage();
+    public abstract Long registerMessage(MessageExpirationTime messageExpirationTime);
 }

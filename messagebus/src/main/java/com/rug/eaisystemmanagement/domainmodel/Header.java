@@ -1,5 +1,6 @@
 package com.rug.eaisystemmanagement.domainmodel;
 
+import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationTime;
 import org.apache.commons.lang3.Validate;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,9 @@ public class Header {
         return messageId;
     }
 
-    public Long initiateMessageId() {
+    public Long initiateMessageId(MessageExpirationTime messageExpirationTime) {
+        this.creationTime = LocalDateTime.now();
+        this.expirationTime = creationTime.plus(messageExpirationTime.getDuration(), messageExpirationTime.getTimeUnit());
         this.messageId = idCount++;
         return messageId;
     }

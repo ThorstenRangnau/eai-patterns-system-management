@@ -2,7 +2,8 @@ package com.rug.eaisystemmanagement.messageprocessor.behavior;
 
 import com.rug.eaisystemmanagement.domainmodel.ContentMessage;
 import com.rug.eaisystemmanagement.domainmodel.Message;
-import com.rug.eaisystemmanagement.messagerouter.MessageRoutingService;
+import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationTime;
+import com.rug.eaisystemmanagement.messagerouter.behavior.MessageRoutingService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,13 +20,13 @@ public class MessageProcessingServiceImpl implements MessageProcessingService {
     private MessageRoutingService messageRoutingService;
     private Map<Long, Message> receivedMessages = new HashMap<>();
     private Set<Long> sendMessages = new HashSet<>();
-
+    private MessageExpirationTime messageExpirationTime = MessageExpirationTime.getDefault();
 
     @Override
     public ContentMessage processContentMessage(ContentMessage message) {
         Validate.notNull(message, "message is null");
         // TODO: check if message is correct, set creation date and exparation time etc.
-        Long messageId = message.registerMessage();
+        Long messageId = message.registerMessage(messageExpirationTime);
         receivedMessages.put(messageId, message);
         Boolean isSend = messageRoutingService.sendMessage(message);
         if (isSend) {

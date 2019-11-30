@@ -6,7 +6,7 @@ public interface RestClient {
 
     String get(String url);
 
-    <T> T post(String url, String json, Class<T> responseType);
+    <T> T post(String url, T postObject, Class<T> responseType);
 
     HttpStatus getStatus();
 

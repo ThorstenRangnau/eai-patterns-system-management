@@ -10,11 +10,11 @@ Example:
 ```
 curl --header "Content-Type: application/json" \
  --request POST \
- --data '{"applicationName": "TestApplication", "url": "localhost:8080"}' \
+ --data '{"applicationName": "ReceiverApplication", "url": "localhost:8080"}' \
  http://localhost:9090/registration
 ```
 
-Return value:
+Return value {RegisteredApplication}:
 ```
 {
     "id":0,

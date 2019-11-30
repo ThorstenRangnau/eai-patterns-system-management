@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class RestClientImpl implements RestClient {
+
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;

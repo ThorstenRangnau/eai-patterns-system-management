@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  messagebus:
+    build: messagebus
+    ports:
+      - 8080:8080
+      - 9090:9090

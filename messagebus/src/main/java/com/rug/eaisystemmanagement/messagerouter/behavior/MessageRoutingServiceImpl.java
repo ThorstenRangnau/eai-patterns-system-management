@@ -26,7 +26,7 @@ public class MessageRoutingServiceImpl implements MessageRoutingService {
         System.out.println("Send the message to application with id " + receiverApplicationId + " and url "
             + receiverUrl + " message content " + message.getMessageContent());
         //TODO: Add data structure to monitor send messages
-        String result = restClient.get("http://localhost:8080/");
+        String result = restClient.get("http://"+System.getenv("RECEIVER_URL")+":8080/");
         System.out.println(result);
         return true;
     }

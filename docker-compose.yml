@@ -3,11 +3,15 @@ version: '3'
 services:
   messagebus:
     build: messagebus
+    environment:
+      - RECEIVER_URL=receiver-application:8080
     ports:
       - 9090:9090
   receiver-application:
     depends_on:
       - messagebus
+    environment:
+      - MESSAGE_BUS=messagebus:9090
     build: receiver-application
     ports:
       - 8080:8080

@@ -21,8 +21,6 @@ public class RestClientImpl implements RestClient {
         headers.add("Accept", "*/*");
     }
 
-    //TODO: think about return types
-
     @Override
     public String get(String url) {
         Validate.notBlank(url, "url is blank");
@@ -33,10 +31,10 @@ public class RestClientImpl implements RestClient {
     }
 
     @Override
-    public String post(String url, String json) {
+    public <T> T post(String url, T postObject, Class<T> responseType) {
         Validate.notBlank(url, "url is blank");
-        HttpEntity<String> requestEntity = new HttpEntity<>(json, headers);
-        ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.POST, requestEntity, String.class);
+        HttpEntity<T> requestEntity = new HttpEntity<T>(postObject, headers);
+        ResponseEntity<T> responseEntity = rest.exchange(url, HttpMethod.POST, requestEntity, responseType);
         this.setStatus(responseEntity.getStatusCode());
         return responseEntity.getBody();
     }

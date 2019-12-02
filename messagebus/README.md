@@ -18,7 +18,7 @@ Return value {RegisteredApplication}:
 ```
 {
     "id":0,
-    "applicationName":"TestApplication",
+    "applicationName":"ReceiverApplication",
     "url":"localhost:8080"
 }
 
@@ -32,6 +32,6 @@ Example:
 ```
 curl --header "Content-Type: application/json" \
  --request POST \
- --data '{"header": {"originator": "TestApplication1", "receiver": "TestApplication"}, "body": {"content": "This is a message"}}' \
+ --data '{"header": {"originator": "SenderApplication", "receiver": "ReceiverApplication"}, "body": {"content": "This is a message"}}' \
  http://localhost:9090/messages
 ```

@@ -3,7 +3,6 @@ package com.rug.eaisystemmanagement.connector.provided;
 
 import com.rug.eaisystemmanagement.domainmodel.ContentMessage;
 import com.rug.eaisystemmanagement.messageprocessor.behavior.MessageProcessingService;
-import com.rug.eaisystemmanagement.messageprocessor.behavior.MessageProcessingServiceImpl;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

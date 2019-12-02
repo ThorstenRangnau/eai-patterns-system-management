@@ -1,6 +1,7 @@
 package com.rug.eaisystemmanagement.messagerouter.behavior;
 
 import com.rug.eaisystemmanagement.domainmodel.ContentMessage;
+import com.rug.eaisystemmanagement.messagerouter.structure.RoutingMessage;
 import com.rug.eaisystemmanagement.messagerouter.structure.restclient.RestClient;
 import com.rug.eaisystemmanagement.registry.behavior.RegistryService;
 import org.apache.commons.lang3.Validate;
@@ -23,11 +24,11 @@ public class MessageRoutingServiceImpl implements MessageRoutingService {
         Validate.notNull(message, "message is null");
         Long receiverApplicationId = registryService.resolveReceiver(message.getReceiver());
         String receiverUrl = registryService.getUrlByApplcationId(receiverApplicationId);
-        System.out.println("Send the message to application with id " + receiverApplicationId + " and url "
-            + receiverUrl + " message content " + message.getMessageContent());
+        System.out.println("INFO: Attempt to rout message to " + receiverUrl);
         //TODO: Add data structure to monitor send messages
-        String result = restClient.get("http://localhost:8080/");
-        System.out.println(result);
-        return true;
+        RoutingMessage routingMessage = new RoutingMessage(message.getMessageId(), message.getMessageContent());
+        routingMessage = restClient.post(receiverUrl, routingMessage, RoutingMessage.class);
+        System.out.println("INFO: send message to receiver application with id " + receiverApplicationId + " the message was send " + routingMessage.getHeader().isSuccess());
+        return routingMessage.getHeader().isSuccess();
     }
 }

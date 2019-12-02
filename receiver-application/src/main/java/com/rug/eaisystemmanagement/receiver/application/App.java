@@ -24,7 +24,7 @@ public class App {
 //        System.getenv("RECEIVER_URL");
         System.out.println("INFO - attempt to register ReceiverApplication to message bus");
         RegisteredApplication registeredApplication =
-            new RegisteredApplication("ReceiverApplication", "localhost:8080/messages");
+            new RegisteredApplication("ReceiverApplication", "http://localhost:8080/messages");
         registeredApplication = restClient.post(MESSAGE_BUS_ADDRESS, registeredApplication, RegisteredApplication.class);
         System.out.println("INFO - register Application and running under id " + registeredApplication.getId());
     }

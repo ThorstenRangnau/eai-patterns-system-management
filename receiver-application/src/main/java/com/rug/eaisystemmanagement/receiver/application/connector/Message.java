@@ -12,4 +12,8 @@ public class Message {
     public Body getBody() {
         return body;
     }
+
+    public void setSuccess(boolean success) {
+        header.setSuccess(success);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 public class App {
 
     private static final String MESSAGE_BUS_ADDRESS = "http://localhost:9090/registration";
+    private static final String MY_OWN_ADDRESS = "http://localhost:8080/messages";
 
     @Autowired
     private RestClient restClient;
@@ -21,10 +22,9 @@ public class App {
 
     @EventListener(ApplicationReadyEvent.class)
     public void registerAtMessageBusAfterStartup() {
-//        System.getenv("RECEIVER_URL");
         System.out.println("INFO - attempt to register ReceiverApplication to message bus");
         RegisteredApplication registeredApplication =
-            new RegisteredApplication("ReceiverApplication", "http://localhost:8080/messages");
+            new RegisteredApplication("ReceiverApplication", MY_OWN_ADDRESS);
         registeredApplication = restClient.post(MESSAGE_BUS_ADDRESS, registeredApplication, RegisteredApplication.class);
         System.out.println("INFO - register Application and running under id " + registeredApplication.getId());
     }

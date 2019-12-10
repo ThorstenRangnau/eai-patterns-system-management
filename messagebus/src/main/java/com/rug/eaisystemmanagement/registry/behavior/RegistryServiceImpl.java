@@ -19,6 +19,7 @@ public class RegistryServiceImpl implements RegistryService {
         RegisteredApplication registeredApplication = new RegisteredApplication();
         registeredApplication.setApplicationName(applicationName);
         registeredApplication.setUrl(url);
+        // TODO: check if application is already registered and override if so
         registeredApplications.put(registeredApplication.getId(), registeredApplication);
         return registeredApplication;
     }

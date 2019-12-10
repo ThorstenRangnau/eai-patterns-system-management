@@ -3,13 +3,70 @@
  */
 package com.rug.eaisystemmanagement.senderapplication;
 
+import com.rug.eaisystemmanagement.senderapplication.connector.restclient.behavior.RestClient;
+import com.rug.eaisystemmanagement.senderapplication.connector.restclient.structure.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class App {
 
+    private static final String MESSAGE_BUS_REGISTRATION_ADDRESS = "http://localhost:9090/registration";
+    private static final String MESSAGE_BUS_MESSAGE_ADDRESS = "http://localhost:9090/messages";
+    private static final String MY_OWN_ADDRESS = "http://localhost:7070/messages";
+    public static final String SENDER_APPLICATION = "SenderApplication";
+    private static final String RECEIVER_APPLICATION = "ReceiverApplication";
+
+    @Autowired
+    private RestClient restClient;
+
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void registerAtMessageBusAfterStartup() {
+        System.out.println("INFO - attempt to register SenderApplication to message bus");
+        RegisteredApplication registeredApplication =
+            new RegisteredApplication(SENDER_APPLICATION, MY_OWN_ADDRESS);
+        registeredApplication = restClient.post(MESSAGE_BUS_REGISTRATION_ADDRESS, registeredApplication, RegisteredApplication.class);
+        System.out.println("INFO - register " + registeredApplication.getApplicationName() +
+            " and running under id " + registeredApplication.getId());
+
+        System.out.println("INFO - start to send messages every 3 seconds to the ReceiverApplication via MessageBus");
+        waitMilliseconds(3000L);
+        // TODO: here we can add a mechanism in order to stop the sender applicaiton form sending messages
+        while (true) {
+            ContentMessage message = createMessage();
+            System.out.println("INFO - Attempt to send message");
+            ArrivalConfirmation arrivalConfirmation = restClient.post(MESSAGE_BUS_MESSAGE_ADDRESS, message, ArrivalConfirmation.class);
+            System.out.println("INFO - Send message with id " + arrivalConfirmation.getMessageId());
+            waitMilliseconds(3000L);
+        }
+    }
+
+    private ContentMessage createMessage() {
+        ContentMessage contentMessage = new ContentMessage();
+        Header header = new Header();
+        header.setOriginator(SENDER_APPLICATION);
+        header.setReceiver(RECEIVER_APPLICATION);
+        Body body = new Body();
+        body.setContent("This is a message send at " + LocalDateTime.now());
+        contentMessage.setHeader(header);
+        contentMessage.setBody(body);
+        return contentMessage;
+    }
+
+    private void waitMilliseconds(Long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

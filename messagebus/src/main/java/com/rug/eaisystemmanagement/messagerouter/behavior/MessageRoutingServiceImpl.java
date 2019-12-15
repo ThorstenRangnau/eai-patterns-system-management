@@ -31,4 +31,6 @@ public class MessageRoutingServiceImpl implements MessageRoutingService {
         System.out.println("INFO: send message to receiver application with id " + receiverApplicationId + " the message was send " + routingMessage.getHeader().isSuccess());
         return routingMessage.getHeader().isSuccess();
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.rug.eai.controlbus.connector;
 
-import com.rug.eai.controlbus.heartbeatmanagement.behavior.HeartbeatService;
+import com.rug.eai.controlbus.connector.restclient.behavior.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/services")
-public class HeartbeatController {
+public class CommandController {
 
     @Autowired
-    private HeartbeatService heartbeatService;
+    private RestClient restClient;
 
     @PostMapping
-    public String receiveHeartbeat(@RequestBody Long id) {
-        return heartbeatService.receiveHeartbeat(id);
+    public String receiveCommand(@RequestBody String command) {
+
+        return 
     }
 
 }

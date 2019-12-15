@@ -31,10 +31,10 @@ public class RestClientImpl implements RestClient {
     }
 
     @Override
-    public <T> T post(String url, T postObject, Class<T> responseType) {
+    public <T, K> K post(String url, T postObject, Class<K> responseType) {
         Validate.notBlank(url, "url is blank");
         HttpEntity<T> requestEntity = new HttpEntity<T>(postObject, headers);
-        ResponseEntity<T> responseEntity = rest.exchange(url, HttpMethod.POST, requestEntity, responseType);
+        ResponseEntity<K> responseEntity = rest.exchange(url, HttpMethod.POST, requestEntity, responseType);
         this.setStatus(responseEntity.getStatusCode());
         return responseEntity.getBody();
     }

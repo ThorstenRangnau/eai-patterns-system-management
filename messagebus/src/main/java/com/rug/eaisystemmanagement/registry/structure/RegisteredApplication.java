@@ -6,12 +6,17 @@ public class RegisteredApplication {
 
     private static Long idCount = 0L;
 
-    private final Long id;
+    private Long id = 0L;
     private String applicationName;
     private String url;
 
     public RegisteredApplication() {
         this.id = idCount++;
+    }
+
+    public RegisteredApplication(String applicationName, String url) {
+        this.applicationName = applicationName;
+        this.url = url;
     }
 
     public Long getId() {

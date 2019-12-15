@@ -18,9 +18,12 @@ public class App {
 
     private static final String MESSAGE_BUS_REGISTRATION_ADDRESS = "http://localhost:9090/registration";
     private static final String MESSAGE_BUS_MESSAGE_ADDRESS = "http://localhost:9090/messages";
+    private static final String CONTROL_BUS_ADDRESS = "http://localhost:6060/registration";
+    private static final String CONTROL_BUS_HEARTBEAT_ADDRESS = "http://localhost:6060/services";
     private static final String MY_OWN_ADDRESS = "http://localhost:7070/messages";
     public static final String SENDER_APPLICATION = "SenderApplication";
     private static final String RECEIVER_APPLICATION = "ReceiverApplication";
+    private RegisteredApplication me;
 
     @Autowired
     private RestClient restClient;
@@ -31,23 +34,37 @@ public class App {
 
     @EventListener(ApplicationReadyEvent.class)
     public void registerAtMessageBusAfterStartup() {
-        System.out.println("INFO - attempt to register SenderApplication to message bus");
-        RegisteredApplication registeredApplication =
-            new RegisteredApplication(SENDER_APPLICATION, MY_OWN_ADDRESS);
-        registeredApplication = restClient.post(MESSAGE_BUS_REGISTRATION_ADDRESS, registeredApplication, RegisteredApplication.class);
-        System.out.println("INFO - register " + registeredApplication.getApplicationName() +
-            " and running under id " + registeredApplication.getId());
+//        System.out.println("INFO - attempt to register SenderApplication to message bus");
+//        RegisteredApplication registeredApplication =
+//            new RegisteredApplication(SENDER_APPLICATION, MY_OWN_ADDRESS);
+//        registeredApplication = restClient.post(MESSAGE_BUS_REGISTRATION_ADDRESS, registeredApplication, RegisteredApplication.class);
+//        System.out.println("INFO - register " + registeredApplication.getApplicationName() +
+//            " and running under id " + registeredApplication.getId());
 
+
+        registerAt(MESSAGE_BUS_REGISTRATION_ADDRESS, "message bus");
+        me = registerAt(CONTROL_BUS_ADDRESS, "control bus");
         System.out.println("INFO - start to send messages every 3 seconds to the ReceiverApplication via MessageBus");
         waitMilliseconds(3000L);
-        // TODO: here we can add a mechanism in order to stop the sender applicaiton form sending messages
         while (true) {
+            String result = restClient.post(CONTROL_BUS_HEARTBEAT_ADDRESS, me.getId(), String.class);
+            System.out.println("INFO - Send HeartBeat to control bus: "  + result);
+            waitMilliseconds(1500L);
             ContentMessage message = createMessage();
             System.out.println("INFO - Attempt to send message");
             ArrivalConfirmation arrivalConfirmation = restClient.post(MESSAGE_BUS_MESSAGE_ADDRESS, message, ArrivalConfirmation.class);
             System.out.println("INFO - Send message with id " + arrivalConfirmation.getMessageId());
-            waitMilliseconds(3000L);
+            waitMilliseconds(1500L);
         }
+    }
+
+    private RegisteredApplication registerAt(String address, String bus) {
+        System.out.println("INFO - attempt to register ReceiverApplication to " + bus);
+        RegisteredApplication registeredApplication =
+            new RegisteredApplication(SENDER_APPLICATION, MY_OWN_ADDRESS);
+        registeredApplication = restClient.post(address, registeredApplication, RegisteredApplication.class);
+        System.out.println("INFO - register Application and running under id " + registeredApplication.getId());
+        return registeredApplication;
     }
 
     private ContentMessage createMessage() {

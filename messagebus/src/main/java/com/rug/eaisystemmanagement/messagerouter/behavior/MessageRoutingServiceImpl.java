@@ -22,11 +22,14 @@ public class MessageRoutingServiceImpl implements MessageRoutingService {
     @Override
     public Boolean sendMessage(ContentMessage message) {
         Validate.notNull(message, "message is null");
+        if (message.hasHistory()) {
+            message.addLocation("MessageRoutingServiceImpl");
+        }
         Long receiverApplicationId = registryService.resolveReceiver(message.getReceiver());
         String receiverUrl = registryService.getUrlByApplcationId(receiverApplicationId);
-        System.out.println("INFO: Attempt to rout message to " + receiverUrl);
+        System.out.println("INFO: Attempt to route message to " + receiverUrl + " with sending history " + (message.hasHistory() ? "on" : "off"));
         //TODO: Add data structure to monitor send messages
-        RoutingMessage routingMessage = new RoutingMessage(message.getMessageId(), message.getMessageContent());
+        RoutingMessage routingMessage = new RoutingMessage(message.getMessageId(), message.getMessageContent(), message.getHistories());
         routingMessage = restClient.post(receiverUrl, routingMessage, RoutingMessage.class);
         System.out.println("INFO: send message to receiver application with id " + receiverApplicationId + " the message was send " + routingMessage.getHeader().isSuccess());
         return routingMessage.getHeader().isSuccess();

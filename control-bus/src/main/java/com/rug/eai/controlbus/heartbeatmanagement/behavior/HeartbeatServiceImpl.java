@@ -21,7 +21,7 @@ public class HeartbeatServiceImpl implements HeartbeatService {
     public String receiveHeartbeat(Long id) {
         Validate.notNull(id, "id is null");
         String heartbeatSender = registryService.resolve(id);
-        System.out.println("Receive heartbeat from " + heartbeatSender);
+        System.out.println("INFO: - Receive heartbeat from " + heartbeatSender);
         return OK;
     }
 }

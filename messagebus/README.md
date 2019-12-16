@@ -35,3 +35,11 @@ curl --header "Content-Type: application/json" \
  --data '{"header": {"originator": "SenderApplication", "receiver": "ReceiverApplication"}, "body": {"content": "This is a message"}}' \
  http://localhost:9090/messages
 ```
+
+Example command:
+```
+curl --header "Content-Type: application/json" \
+ --request POST \
+ --data '{"command": "MessageHistory"}' \
+ http://localhost:6060/command
+```

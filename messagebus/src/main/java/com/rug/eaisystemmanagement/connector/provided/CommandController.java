@@ -1,6 +1,6 @@
-package com.rug.eai.controlbus.connector;
+package com.rug.eaisystemmanagement.connector.provided;
 
-import com.rug.eai.controlbus.connector.restclient.behavior.RestClient;
+import com.rug.eaisystemmanagement.messageprocessor.behavior.MessageProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/command")
 public class CommandController {
 
+    private static final String MESSAGE_HISTORY = "MessageHistory";
     @Autowired
-    private RestClient restClient;
-    private static final String MESSAGE_BUS_ADDRESS = "http://localhost:9090/command";
+    private MessageProcessingService messageProcessingService;
 
     @PostMapping
     public String receiveCommand(@RequestBody String command) {
-        return restClient.post(MESSAGE_BUS_ADDRESS, command, String.class);
+        if (command.contains(MESSAGE_HISTORY)) {
+            messageProcessingService.toggleMessageHistory();
+        }
+        return "OK";
     }
+
 
 }

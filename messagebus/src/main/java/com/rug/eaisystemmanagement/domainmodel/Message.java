@@ -3,6 +3,8 @@ package com.rug.eaisystemmanagement.domainmodel;
 import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationTime;
 import org.apache.commons.lang3.Validate;
 
+import java.util.List;
+
 public abstract class Message {
 
     private Header header;
@@ -22,6 +24,18 @@ public abstract class Message {
 
     public String getMessageContent() {
         return body.getContent();
+    }
+
+    public void addLocation(String location) {
+        header.addLocation(location);
+    }
+
+    public boolean hasHistory(){
+        return header.hasHistory();
+    };
+
+    public List<String> getHistories() {
+        return header.getLocations();
     }
 
     protected Header getHeader() {

@@ -4,6 +4,8 @@ import com.rug.eaisystemmanagement.messageprocessor.structure.MessageExpirationT
 import org.apache.commons.lang3.Validate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Header {
 
@@ -15,6 +17,7 @@ public class Header {
     private LocalDateTime creationTime;
     private LocalDateTime expirationTime;
     private Boolean isSend;
+    private List<String> locations = new ArrayList<>();
 
     public Long getMessageId() {
         return messageId;
@@ -69,5 +72,17 @@ public class Header {
 
     public boolean isSend() {
         return isSend;
+    }
+
+    public void addLocation(String location) {
+        this.locations.add(location);
+    }
+
+    public boolean hasHistory() {
+        return locations.size() > 0;
+    }
+
+    public List<String> getLocations() {
+        return locations;
     }
 }

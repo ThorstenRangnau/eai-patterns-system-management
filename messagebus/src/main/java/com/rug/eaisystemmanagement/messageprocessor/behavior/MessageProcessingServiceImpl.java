@@ -21,11 +21,16 @@ public class MessageProcessingServiceImpl implements MessageProcessingService {
     private Map<Long, Message> receivedMessages = new HashMap<>();
     private Set<Long> sendMessages = new HashSet<>();
     private MessageExpirationTime messageExpirationTime = MessageExpirationTime.getDefault();
+    private Boolean messageHistoryEnabled = false;
 
     @Override
     public ContentMessage processContentMessage(ContentMessage message) {
         Validate.notNull(message, "message is null");
         // TODO: check if message is correct, set creation date and exparation time etc.
+        if (this.messageHistoryEnabled) {
+            message.addLocation("SenderApplication");
+            message.addLocation("MessageProcessingServiceImpl");
+        }
         Long messageId = message.registerMessage(messageExpirationTime);
         receivedMessages.put(messageId, message);
         Boolean isSend = messageRoutingService.sendMessage(message);
@@ -34,5 +39,12 @@ public class MessageProcessingServiceImpl implements MessageProcessingService {
             message.setSendingStatus(isSend);
         }
         return message;
+    }
+
+    @Override
+    public void toggleMessageHistory() {
+        System.out.println("Inside toggle message history");
+        this.messageHistoryEnabled = !this.messageHistoryEnabled;
+        System.out.println("History is " + this.messageHistoryEnabled);
     }
 }
